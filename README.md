@@ -10,3 +10,4 @@ Important steps for git workflow:
 Table of Contents
 
     LICENSE.md
+    Introduction to Programming with JavaScript
