@@ -12,7 +12,16 @@ function evenOrOdd(num) {
   }
 };
 
-let rlSync = require('readline-sync');
-let myNum = rlSync.question('What is the number?: ');
+function evenOrOddShort(num) {
+  if (Number.isInteger(num)) {
+    num % 2 === 0 ? console.log(`${num} is even`) : console.log(`${num} is odd`);
+  } else {
+    console.log(`Sorry, the value you passed is not an integer`);
+  }
+};
 
-evenOrOdd(myNum);
+let rlSync = require('readline-sync');
+let myInput = Number(rlSync.question('What is the number?: '));
+
+// evenOrOdd(myInput);
+evenOrOddShort(myInput);
