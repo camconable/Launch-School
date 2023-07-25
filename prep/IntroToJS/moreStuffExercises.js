@@ -163,7 +163,69 @@ let words = [
   'flab',
   'Pans Labyrinth',
   'elaborate',
-  'polar bear',
+  'polar bear'
 ];
 
+function allMatches(arr, reg) {
+  let matchedArr = [];
+  for (let val of arr) {
+    let myMatch = reg.test(val);
+    if (myMatch) {
+      matchedArr = matchedArr.concat(val);
+    } else {
+      console.log(`${val} does not match ${reg}`);
+    }
+  }
+  return matchedArr;
+}
+
+// console.log(/b/.test('bobcat'));
+
 console.log(allMatches(words, /lab/)); // => ['laboratory', 'flab', 'elaborate']
+
+//---------------------------------------------------
+
+
+// 7) What is exception handling and what problem does it solve?
+
+// Cam's answer: Exception handling assists with handling non-serious
+// errors gracefully. When these errors are handled it allows the program
+// to continue to run, because some exceptions can halt the program. Exception
+// handling can help the programmer troubleshoot errors, log errors,
+// and handle a variety of outcomes
+
+// LS answer: Exception handling is a process that deals with errors in a 
+// manageable and predictable manner. It uses the try/catch statement to catch
+//  exceptions that the code in the try block raises, and lets the programmer 
+//  deal with the problem in a way that makes sense and perhaps prevents a 
+//  catastrophic failure or nasty bug.
+
+
+//---------------------------------------------------
+
+// 8) Challenging Exercise This exercise has nothing to do with this chapter. 
+// Instead, it uses concepts you learned earlier in the book. If you can't 
+// figure out the answer, don't worry: this question can stump developers 
+// with more experience than you have.
+
+// Earlier, we learned that Number.isNaN(value) returns true if value is the 
+// NaN value, false otherwise. You can also use Object.is(value, NaN) to make
+//  the same determination.
+
+// Without using either of those methods, write a function named isNotANumber
+//  that returns true if the value passed to it as an argument is NaN, false 
+//  if it is not.
+
+// function isNotANumber(val) {
+//   let myNan = 7 * 'blahblah';
+//   let valNan;
+//   if (val == 'NaN') {
+//     valNan = 9 * 'boogah';
+//   }
+//   console.log(val);
+//   return val !== myNan ? false : true;
+// }
+
+// console.log(isNotANumber(NaN));
+
+// console.log(typeof NaN);
