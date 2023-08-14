@@ -304,16 +304,16 @@
 //   panic if you miss a few items - this exercise is 
 //   more challenging than it looks.
 
-function hello(greeting, name) {
-  return greeting + ' ' + name;
-}
+// function hello(greeting, name) {
+//   return greeting + ' ' + name;
+// }
 
-function xyzzy() {
-  return { a: 1, b: 2, c: [3, 4, 5], d: {} };
-}
+// function xyzzy() {
+//   return { a: 1, b: 2, c: [3, 4, 5], d: {} };
+// }
 
-const howdy = hello('Hi', 'Grace');
-let foo = xyzzy();
+// const howdy = hello('Hi', 'Grace');
+// let foo = xyzzy();
 
 // Cam's answer:
 // variables: hello, greeting, name, xyzzy, howdy, foo
