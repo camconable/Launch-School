@@ -5,6 +5,7 @@
 // display the result of operation
 
 let rlSync = require('readline-sync');
+const MESSAGES = require('./calculator_messages.json');
 
 function prompt(msg) {
   console.log(`=> ${msg}`);
@@ -15,47 +16,52 @@ function invalidNumber(number) {
   return number.trimStart() === '' || Number.isNaN(Number(number));
 }
 
-prompt(`Welcome to The Calculator!`);
+let goAgain;
+do {
+  prompt(MESSAGES.welcome);
 
-let num1 = rlSync.question(prompt(`What is the first number?: `));
+  let num1 = rlSync.question(prompt(MESSAGES.firstNum));
 
-while (invalidNumber(num1)) {
-  prompt(`Hmmm... that doesn't look like a valid number.`);
-  num1 = rlSync.question();
-}
+  while (invalidNumber(num1)) {
+    prompt(MESSAGES.invalidNum);
+    num1 = rlSync.question();
+  }
 
-let num2 = rlSync.question(prompt(`What is the second number?: `));
+  let num2 = rlSync.question(prompt(MESSAGES.secondNum));
 
-while (invalidNumber(num2)) {
-  prompt(`Hmmm... that doesn't look like a valid number.`);
-  num2 = rlSync.question();
-}
+  while (invalidNumber(num2)) {
+    prompt(MESSAGES.invalidNum);
+    num2 = rlSync.question();
+  }
 
-let operation = rlSync.question(prompt(`What operation would you like to perform?\n\n1) Add\n2) Subtract\n3) Multiply\n4) Divide\n`));
+  let operation = rlSync.question(prompt(MESSAGES.whichOperation));
 
-while (!['1', '2', '3', '4'].includes(operation)) {
-  prompt(`Please choose either 1, 2, 3, or 4`);
-  operation = rlSync.question();
-}
+  while (!['1', '2', '3', '4'].includes(operation)) {
+    prompt(MESSAGES.correctOperation);
+    operation = rlSync.question();
+  }
 
-let output;
+  let output;
 
-switch (operation) {
-  case '1':
-    output = Number(num1) + Number(num2);
-    break;
-  case '2':
-    output = Number(num1) - Number(num2);
-    break;
-  case '3':
-    output = Number(num1) * Number(num2);
-    break;
-  case '4':
-    output = Number(num1) / Number(num2);
-    break;
-  default:
-    console.log(`Error`);
-    break;
-}
+  switch (operation) {
+    case '1':
+      output = Number(num1) + Number(num2);
+      break;
+    case '2':
+      output = Number(num1) - Number(num2);
+      break;
+    case '3':
+      output = Number(num1) * Number(num2);
+      break;
+    case '4':
+      output = Number(num1) / Number(num2);
+      break;
+    default:
+      console.log(`Error`);
+      break;
+  }
 
-prompt(`The result is ${output}`);
+  prompt(MESSAGES.result + output);
+  // ask user if they want to go again, if 1 then loop again
+  goAgain = Number(rlSync.question(prompt(MESSAGES.runAgain)));
+} while (goAgain === 1);
