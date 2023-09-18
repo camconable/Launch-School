@@ -3,8 +3,6 @@
 // ask user for operation (add, subtract, multiply, divide)
 // perform the operation
 // display the result of operation
-
-let rlSync = require('readline-sync');
 const MESSAGES = require('./calculator_messages.json');
 
 function prompt(msg) {
@@ -16,28 +14,60 @@ function invalidNumber(number) {
   return number.trimStart() === '' || Number.isNaN(Number(number));
 }
 
-let goAgain;
-do {
-  prompt(MESSAGES.welcome);
+function messages(message, lang='en') {
+  return MESSAGES[lang][message];
+}
 
-  let num1 = rlSync.question(prompt(MESSAGES.firstNum));
+let rlSync = require('readline-sync');
+let language = rlSync.question(prompt('What language would you prefer?\n1) English\n2) Spanish (Espanol)\n3) French (Francais)\n4) Mandarin (普通话)'));
+
+while (!['1', '2', '3', '4'].includes(language)) {
+  language = rlSync.question(prompt('Invalid language input.\nWhat language would you prefer?\n1) English\n2) Spanish (Espanol)\n3) French (Francais)\n4) Mandarin (普通话)'));
+}
+
+let LANG;
+
+switch (language) {
+  case '1':
+    LANG = 'en';
+    break;
+  case '2':
+    LANG = 'es';
+    break;
+  case '3':
+    LANG = 'fr';
+    break;
+  case '4':
+    LANG = 'zh';
+    break;
+  default:
+    LANG = 'en';
+    break;
+}
+
+let goAgain;
+
+do {
+  prompt(messages('welcome', LANG));
+
+  let num1 = rlSync.question(prompt(messages('firstNum', LANG)));
 
   while (invalidNumber(num1)) {
-    prompt(MESSAGES.invalidNum);
+    prompt(messages('invalidNum', LANG));
     num1 = rlSync.question();
   }
 
-  let num2 = rlSync.question(prompt(MESSAGES.secondNum));
+  let num2 = rlSync.question(prompt(messages('secondNum', LANG)));
 
   while (invalidNumber(num2)) {
-    prompt(MESSAGES.invalidNum);
+    prompt(messages('invalidNum', LANG));
     num2 = rlSync.question();
   }
 
-  let operation = rlSync.question(prompt(MESSAGES.whichOperation));
+  let operation = rlSync.question(prompt(messages('whichOperation', LANG)));
 
   while (!['1', '2', '3', '4'].includes(operation)) {
-    prompt(MESSAGES.correctOperation);
+    prompt(messages('correctOperation', LANG));
     operation = rlSync.question();
   }
 
@@ -61,7 +91,7 @@ do {
       break;
   }
 
-  prompt(MESSAGES.result + output);
+  prompt(messages('result', LANG) + output);
   // ask user if they want to go again, if 1 then loop again
-  goAgain = Number(rlSync.question(prompt(MESSAGES.runAgain)));
+  goAgain = Number(rlSync.question(prompt(messages('runAgain', LANG))));
 } while (goAgain === 1);

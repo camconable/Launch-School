@@ -1,11 +1,46 @@
 {
-  "welcome" : "Welcome to the Calculator!",
-  "whatLang" : "What language do you speak?: ",
-  "firstNum" : "What is the first number?: ",
-  "secondNum" : "What is the second number?: ",
-  "invalidNum" : "Hmmm... that doesn't look like a valid number.",
-  "whichOperation" : "What operation would you like to perform?\n\n1) Add\n2) Subtract\n3) Multiply\n4) Divide\n",
-  "correctOperation" : "Please choose either 1, 2, 3, or 4",
-  "result" : "The result is ",
-  "runAgain" : "Do you want to run another calculation?\n1) Yes"
+  "en" : {
+    "welcome" : "Welcome to the Calculator!",
+    "whatLang" : "What language do you speak?: ",
+    "firstNum" : "What is the first number?: ",
+    "secondNum" : "What is the second number?: ",
+    "invalidNum" : "Hmmm... that doesn't look like a valid number.",
+    "whichOperation" : "What operation would you like to perform?\n\n1) Add\n2) Subtract\n3) Multiply\n4) Divide\n",
+    "correctOperation" : "Please choose either 1, 2, 3, or 4",
+    "result" : "The result is ",
+    "runAgain" : "Do you want to run another calculation?\n1) Yes"
+  },
+  "es" : {
+    "welcome" : "¡Bienvenido a la Calculadora!",
+    "whatLang" : "¿En qué idioma hablas?: ",
+    "firstNum" : "¿Cuál es el primer número?: ",
+    "secondNum" : "¿Cuál es el segundo número?: ",
+    "invalidNum" : "Hmmm... eso no parece ser un número válido.",
+    "whichOperation" : "¿Qué operación te gustaría realizar?\n\n1) Sumar\n2) Restar\n3) Multiplicar\n4) Dividir\n",
+    "correctOperation" : "Por favor, elige 1, 2, 3 o 4",
+    "result" : "El resultado es ",
+    "runAgain" : "¿Quieres realizar otro cálculo?\n1) Sí"
+  },
+  "fr" : {
+    "welcome" : "Bienvenue dans la calculatrice !",
+    "whatLang" : "Dans quelle langue parlez-vous ? : ",
+    "firstNum" : "Quel est le premier numéro ? : ",
+    "secondNum" : "Quel est le deuxième numéro ? : ",
+    "invalidNum" : "Hmmm... cela ne ressemble pas à un nombre valide.",
+    "whichOperation" : "Quelle opération souhaitez-vous effectuer ?\n\n1) Additionner\n2) Soustraire\n3) Multiplier\n4) Diviser\n",
+    "correctOperation" : "Veuillez choisir 1, 2, 3 ou 4",
+    "result" : "Le résultat est ",
+    "runAgain" : "Souhaitez-vous effectuer un autre calcul ?\n1) Oui"
+  },
+  "zh" : {
+    "welcome" : "欢迎使用计算器！",
+    "whatLang" : "您说什么语言？：",
+    "firstNum" : "第一个数字是什么？：",
+    "secondNum" : "第二个数字是什么？：",
+    "invalidNum" : "嗯... 这似乎不是一个有效的数字。",
+    "whichOperation" : "您想执行哪种操作？\n\n1) 相加\n2) 相减\n3) 相乘\n4) 相除\n",
+    "correctOperation" : "请选取1、2、3或4",
+    "result" : "结果为",
+    "runAgain" : "您想再次进行计算吗？\n1) 是"
+  }
 }
