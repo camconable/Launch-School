@@ -81,10 +81,6 @@ function calculateMonthlyPayment(amount,
   loanDurationMonths) {
   let payment;
 
-  prompt(`amount: ${amount}`);
-  prompt(`monthlyRate: ${monthlyRate}`);
-  prompt(`loanDurationMonths: ${loanDurationMonths}`);
-
   if (loanDurationMonths === 0) {
     payment = loanDurationMonths;
   } else if (monthlyRate === 0) {
@@ -108,7 +104,7 @@ function displayResults(
   prompt('loanDetails');
   displayBreak();
   prompt(`Loan Amount: $${amount}`);
-  prompt(`APR: $${apr}%`);
+  prompt(`APR: ${apr}%`);
   prompt(
     `Duration: ${Math.ceil(monthDuration)} months (${yearDuration} years)`
   );
@@ -119,6 +115,12 @@ function displayResults(
 
 function wantsToGoAgain(input) {
   return ['yes', 'y'].includes(input.toLowerCase());
+}
+function byeBye() {
+  console.clear();
+  displayBreak();
+  prompt('goodbye');
+  displayBreak();
 }
 
 let goAgain;
@@ -159,4 +161,4 @@ do {
   goAgain = askToRepeat();
 } while (wantsToGoAgain(goAgain));
 
-
+byeBye();
