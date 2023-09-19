@@ -1,0 +1,12 @@
+{
+  "break": "--------------------------------------",
+  "welcome": "Welcome to the Mortgage Calculator!",
+  "goodbye": "Thanks for using the Mortgage Calculator. Good luck!",
+  "askIfInterest": "Does this loan have interest?\nPlease enter 1 for Yes or 2 for No: ",
+  "requestLoan": "What is the loan amount?: ",
+  "requestLoanDuration": "What is the loan duration (in months)?: ",
+  "requestAPR": "What is the Annual Percentage Rate?",
+  "requestAnotherCalc": "Go again?\nEnter 1 to run again",
+  "validNumber": "Please enter a valid number (n >= 0): ",
+  "validAmount": "Please enter a number (n >= 0) up to two decimals: "
+}
