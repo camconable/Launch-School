@@ -1,6 +1,10 @@
 const MESSAGES = require('./mortgage_calculator_messages.json');
+const MONTHS_PER_YEAR = 12;
 const rlSync = require('readline-sync');
-let goAgain;
+
+function displayBreak() {
+  prompt('break');
+}
 
 function prompt(msg) {
   if (Object.keys(MESSAGES).includes(msg)) {
@@ -10,27 +14,69 @@ function prompt(msg) {
   }
 }
 
+function askToRepeat() {
+  return rlSync.question(prompt('requestAnotherCalc'));
+}
+
 function isInvalidAmount(num) {
+  // check if numbers after decimals exist and they're longer than 2 places
   return num.split(".")[1] && num.split(".")[1].length > 2;
 }
 
 function isInvalidNum(num) {
-  return isEmpty(num) || isNegative(num) || isNaN(num);
-}
-
-function isEmpty(num) {
-  return num.trim() === '';
+  return isNegative(num) || isEmpty(num) || isNaN(num);
 }
 
 function isNegative(num) {
   return Number(num) < 0;
 }
 
+function isEmpty(num) {
+  return num.trim() === '';
+}
+
 function isNaN(num) {
   return Number.isNaN(Number(num));
 }
 
-function calculateWithInterest(amount,
+function getUserInput(str) {
+  prompt(str);
+  return rlSync.question();
+}
+
+function getAndValidateAmount() {
+  let amount = getUserInput('requestLoan');
+
+  while (isInvalidAmount(amount) || isInvalidNum(amount)) {
+    prompt('validAmount');
+    amount = rlSync.question();
+  }
+
+  return Number(amount);
+}
+
+function getAndValidateNum(input) {
+  let num = getUserInput(input);
+  return validateNum(num);
+}
+
+function validateNum(num) {
+  while (isInvalidNum(num)) {
+    prompt("validNumber");
+    num = rlSync.question();
+  }
+  return Number(num);
+}
+
+function calculateMonthDuration(years) {
+  return years * MONTHS_PER_YEAR;
+}
+
+function calculateMonthlyInterest(apr) {
+  return (apr / 100) / 12;
+}
+
+function calculateMonthlyPayment(amount,
   monthlyRate,
   loanDurationMonths) {
   let payment;
@@ -48,67 +94,71 @@ function calculateWithInterest(amount,
   return payment.toFixed(2);
 }
 
-function calculateNoInterest(amount, loanDurationMonths) {
-  return (amount / loanDurationMonths).toFixed(2);
+function displayResults(
+  amount,
+  apr,
+  monthDuration,
+  yearDuration,
+  monthlyPayment
+) {
+  prompt('loanDetails');
+  displayBreak();
+  prompt(`Loan Amount: $${amount}`);
+  prompt(`APR: ${apr}%`);
+  prompt(
+    `Duration: ${Math.ceil(monthDuration)} months (${yearDuration} years)`
+  );
+  displayBreak();
+  prompt(`Monthly Payment: $${monthlyPayment}`);
+  displayBreak();
 }
 
+function wantsToGoAgain(input) {
+  return ['yes', 'y'].includes(input.toLowerCase());
+}
+function byeBye() {
+  console.clear();
+  displayBreak();
+  prompt('goodbye');
+  displayBreak();
+}
+
+let goAgain;
 
 do {
+  console.clear();
   prompt('welcome');
+  displayBreak();
 
-  // decide whether to have interest or not
-  let interestDecision = rlSync.question(prompt('askIfInterest'));
+  let amount = getAndValidateAmount();
 
-  while (!['1', '2'].includes(interestDecision)) {
-    interestDecision = rlSync.question(prompt('askIfInterest'));
-  }
+  console.clear();
+  let yearDuration = getAndValidateNum('requestLoanDuration');
 
-  let loanAmount = parseFloat(rlSync.question(prompt('requestLoan')));
+  console.clear();
+  let loanDurationMonths = calculateMonthDuration(yearDuration);
 
-  while (!Number.isInteger(loanAmount)) {
-    prompt('validAmount');
-    loanAmount = parseFloat(rlSync.question(prompt('requestLoan')));
-  }
+  console.clear();
+  let apr = getAndValidateNum('requestAPR');
 
-  let loanDurationMonths = Number(rlSync.question(prompt('requestLoanDuration')));
+  console.clear();
+  let monthlyInterest = calculateMonthlyInterest(apr);
 
-  // validate input - check if integer
-  while (!Number.isInteger(loanDurationMonths)) {
-    // console.log(`That's not an integer or decimal. Try again.`);
-    prompt('validNumber');
-    loanDurationMonths = Number(rlSync.question(prompt('requestLoanDuration')));
+  let monthlyPayment = calculateMonthlyPayment(
+    amount,
+    monthlyInterest,
+    loanDurationMonths
+  );
 
-  }
-  let annualPercentageRate;
-  let monthlyInterestRate;
+  displayResults(
+    amount,
+    apr,
+    loanDurationMonths,
+    yearDuration,
+    monthlyPayment
+  );
 
-  // if loan has interest, take interest rate input
-  if (interestDecision === '1') {
-    annualPercentageRate = Number(rlSync.question(prompt('requestAPR')));
-    // validate input - check if integer
-    while (!Number.isInteger(annualPercentageRate)) {
-      console.log(`validNumber`);
-      annualPercentageRate = Number(rlSync.question(prompt('requestAPR')));
-    }
-    // convert for use in formula below
-    monthlyInterestRate = (annualPercentageRate / 100) / 12;
-  }
+  goAgain = askToRepeat();
+} while (wantsToGoAgain(goAgain));
 
-  // if user entered 1, run and log payment with interest
-  // otherwise, run and log interest-free payment
-
-  if (interestDecision === '1') {
-    let monthlyPaymentWithInterest = calculateWithInterest(loanAmount,
-      monthlyInterestRate, loanDurationMonths);
-    prompt(`The monthly payment of $${loanAmount.toFixed(2)} with an APR of ${annualPercentageRate.toFixed(1)}% is: $${monthlyPaymentWithInterest}`);
-  } else if (interestDecision === '2') {
-    // interest-free loan only passes 2 arguments
-    let monthlyPaymentNoInterest = calculateNoInterest(loanAmount,
-      loanDurationMonths);
-    prompt(`The monthly payment of $${loanAmount.toFixed(2)} without interest is: $${monthlyPaymentNoInterest}`);
-  }
-
-  goAgain = rlSync.question(prompt(`Go again?\nEnter 1 to run again: `));
-} while (goAgain === '1');
-
-
+byeBye();
