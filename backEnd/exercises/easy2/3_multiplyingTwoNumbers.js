@@ -33,5 +33,6 @@ function multiply(num1, num2) {
 
 let num1 = getAndValidateNum();
 let num2 = getAndValidateNum();
+let result = multiply(num1, num2);
 
-console.log(multiply(num1, num2) === 15);
+console.log(`The result of ${num1} * ${num2} is ${result}`);
