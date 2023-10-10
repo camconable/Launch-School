@@ -90,10 +90,10 @@
 // What will the following code log to the console and why?
 // Don't run it until you have tried to answer.
 
-let myWords = ['Hello'];
-myWords[0] = myWords[0].toUpperCase();
+// let myWords = ['Hello'];
+// myWords[0] = myWords[0].toUpperCase();
 
-console.log(myWords);
+// console.log(myWords);
 
 // ['HELLO'] is logged to the console, since the array is mutated in line 2.
 // The 0th index of myWords array is reassigned (mutated) to the return value
