@@ -1,0 +1,6 @@
+{
+  "break": "------------------------------------------------------------------",
+  "welcome": "Welcome to Rock, Papers, Scissors, Lizard, Spock!",
+  "choose": "Please choose one from this list: ",
+  "conflictCharacter": "Please enter something more specific. You entered: "
+}

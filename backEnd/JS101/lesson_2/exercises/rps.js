@@ -1,26 +1,36 @@
 const readline = require('readline-sync');
+const MESSAGES = require('./rps_messages.json');
 const VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
-const conflictChar = computeConflictCharacter(VALID_CHOICES);
+const conflictCharacters = computeConflictCharacters(VALID_CHOICES);
 
 function prompt(msg) {
-  console.log(`=> ${msg}`);
+  if (Object.keys(MESSAGES).includes(msg)) {
+    console.log(`=> ${MESSAGES[msg]}`);
+  } else {
+    console.log(`=> ${msg}`);
+  }
 }
 
-function computeConflictCharacter (VALID_CHOICES) {
+function computeConflictCharacters(VALID_CHOICES) {
   let charArray = [];
+  let conflictCharArray = [];
 
   VALID_CHOICES.forEach((element) => charArray.push(element[0]));
 
   for (const element of charArray) {
     if (itemCounter(charArray, element) > 1) {
-      return element;
+      conflictCharArray.push(element);
     }
   }
-  return null;
+  return removeDuplicates(conflictCharArray);
 }
 
-function itemCounter (value, index) {
-  return value.filter((x) => x === index).length;
+function itemCounter(array, index) {
+  return array.filter((x) => x === index).length;
+}
+
+function removeDuplicates(array) {
+  return array.filter((value, index) => array.indexOf(value) === index);
 }
 
 function findFullLengthChoice(input, array) {
@@ -70,10 +80,12 @@ function displayAndValidateChoice() {
   prompt(`Choose one: ${VALID_CHOICES.join(', ')}`);
   let choice = readline.question();
 
-  if (choice === conflictChar) {
-    console.log(`You entered: ${conflictChar}, please enter something more specific.`);
-    choice = displayAndValidateChoice();
-  }
+  conflictCharacters.forEach((element) => {
+    if (choice === element) {
+      console.log(`You entered: ${element}, please enter something more specific.`);
+      choice = displayAndValidateChoice();
+    }
+  });
 
   if (choice.length <= 2) {
     choice = findFullLengthChoice(choice, VALID_CHOICES);
@@ -88,13 +100,13 @@ function displayAndValidateChoice() {
   return choice;
 }
 
-function displayCurrentScore (userTally, computerTally) {
+function displayCurrentScore(userTally, computerTally) {
   prompt(`The current score is:`);
   prompt(`You: ${userTally}`);
   prompt(`Computer: ${computerTally}`);
 }
 
-function displayWinner (choice, computerChoice) {
+function displayWinner(choice, computerChoice) {
   prompt(`You chose ${choice}.`);
   prompt(`Computer chose ${computerChoice}.`);
 
@@ -107,7 +119,7 @@ function displayWinner (choice, computerChoice) {
   }
 }
 
-function displayGrandWinner (userTally, computerTally) {
+function displayGrandWinner(userTally, computerTally) {
   if (userTally >= 3) {
     prompt(`You're the grand winner!`);
   } else if (computerTally >= 3) {
@@ -115,7 +127,7 @@ function displayGrandWinner (userTally, computerTally) {
   }
 }
 
-function computeGrandWinner (userTally, computerTally) {
+function computeGrandWinner(userTally, computerTally) {
   if (userTally >= 3) {
     return 'user';
   } else if (computerTally >= 3) {
@@ -140,7 +152,7 @@ function askToRepeat() {
   return answer;
 }
 
-function computeWinner (choice, computerChoice) {
+function computeWinner(choice, computerChoice) {
   if (userWon(choice, computerChoice)) {
     return 'user';
   } else if (computerWon(choice, computerChoice)) {
