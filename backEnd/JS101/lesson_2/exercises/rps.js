@@ -1,6 +1,7 @@
 const readline = require('readline-sync');
 const MESSAGES = require('./rps_messages.json');
 const VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
+const TALLY_TO_WIN = 3;
 const conflictCharacters = computeConflictCharacters(VALID_CHOICES);
 
 function prompt(msg) {
@@ -13,24 +14,29 @@ function prompt(msg) {
 
 function displayWelcome() {
   console.clear();
-  displayBreak();
+  displayLongBreak();
   prompt(`welcome`);
+  displayLongBreak();
   readline.question(prompt(`pressEnter`));
 }
 
-function displayBreak(num = 1) {
+function displayLongBreak(num = 1) {
   let idx = 0;
   while (idx < num) {
-    prompt(`break`);
+    prompt(`breakLong`);
     idx += 1;
   }
 }
 
+function displayShortBreak() {
+  prompt(`breakShort`);
+}
+
 function displayRound(num) {
   console.clear();
-  displayBreak();
+  displayShortBreak();
   prompt(`Round: ${num}!`);
-  displayBreak();
+  displayShortBreak();
 }
 
 function computeConflictCharacters(VALID_CHOICES) {
@@ -121,20 +127,12 @@ function validateAndDisplayChoice() {
   return choice;
 }
 
-function displayCurrentScore(userTally, computerTally) {
-  displayBreak();
-  prompt(`The current score is:`);
-  prompt(`You: ${userTally}`);
-  prompt(`Computer: ${computerTally}`);
-  displayBreak();
-}
-
 function displayRoundWinner(choice, computerChoice) {
   console.clear();
-  displayBreak();
+  displayShortBreak();
   prompt(`You chose ${choice}.`);
   prompt(`Computer chose ${computerChoice}.`);
-  displayBreak();
+  displayShortBreak();
   if (userWon(choice, computerChoice)) {
     prompt(`userRoundWinner`);
   } else if (computerWon(choice, computerChoice)) {
@@ -142,18 +140,29 @@ function displayRoundWinner(choice, computerChoice) {
   } else {
     prompt(`It's a tie!`);
   }
-  displayBreak();
+  displayShortBreak();
+}
+
+function displayCurrentScore(userTally, computerTally) {
+  prompt(`currentScore`);
+  prompt(`You: ${userTally}`);
+  prompt(`Computer: ${computerTally}`);
+  displayShortBreak();
 }
 
 function displayGrandWinner(userTally, computerTally) {
-  if (userTally >= 3) {
-    displayBreak();
+  if (userTally >= TALLY_TO_WIN) {
+    readline.question(prompt(`pressEnter`));
+    console.clear();
+    displayLongBreak(3);
     prompt(`userGrandWinner`);
-    displayBreak();
-  } else if (computerTally >= 3) {
-    displayBreak();
+    displayLongBreak(3);
+  } else if (computerTally >= TALLY_TO_WIN) {
+    readline.question(prompt(`pressEnter`));
+    console.clear();
+    displayLongBreak(3);
     prompt(`computerGrandWinner`);
-    displayBreak();
+    displayLongBreak(3);
   }
   readline.question(prompt(`pressEnter`));
 }
@@ -169,9 +178,9 @@ function computeRoundWinner(choice, computerChoice) {
 }
 
 function computeGrandWinner(userTally, computerTally) {
-  if (userTally >= 3) {
+  if (userTally >= TALLY_TO_WIN) {
     return 'user';
-  } else if (computerTally >= 3) {
+  } else if (computerTally >= TALLY_TO_WIN) {
     return 'computer';
   }
   return null;
