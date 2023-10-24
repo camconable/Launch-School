@@ -11,6 +11,28 @@ function prompt(msg) {
   }
 }
 
+function displayWelcome() {
+  console.clear();
+  displayBreak();
+  prompt(`welcome`);
+  readline.question(prompt(`pressEnter`));
+}
+
+function displayBreak(num = 1) {
+  let idx = 0;
+  while (idx < num) {
+    prompt(`break`);
+    idx += 1;
+  }
+}
+
+function displayRound(num) {
+  console.clear();
+  displayBreak();
+  prompt(`Round: ${num}!`);
+  displayBreak();
+}
+
 function computeConflictCharacters(VALID_CHOICES) {
   let charArray = [];
   let conflictCharArray = [];
@@ -76,14 +98,14 @@ function computerWon(choice, computerChoice) {
       (computerChoice === 'paper' && choice === 'spock'));
 }
 
-function displayAndValidateChoice() {
+function validateAndDisplayChoice() {
   prompt(`Choose one: ${VALID_CHOICES.join(', ')}`);
   let choice = readline.question();
 
   conflictCharacters.forEach((element) => {
     if (choice === element) {
       console.log(`You entered: ${element}, please enter something more specific.`);
-      choice = displayAndValidateChoice();
+      choice = validateAndDisplayChoice();
     }
   });
 
@@ -92,38 +114,57 @@ function displayAndValidateChoice() {
   }
 
   while (!VALID_CHOICES.includes(choice)) {
-    prompt(`That's not a valid choice`);
-    choice = readline.question();
-    choice = findFullLengthChoice(choice, VALID_CHOICES);
+    prompt(`invalidChoice`);
+    choice = validateAndDisplayChoice();
   }
 
   return choice;
 }
 
 function displayCurrentScore(userTally, computerTally) {
+  displayBreak();
   prompt(`The current score is:`);
   prompt(`You: ${userTally}`);
   prompt(`Computer: ${computerTally}`);
+  displayBreak();
 }
 
-function displayWinner(choice, computerChoice) {
+function displayRoundWinner(choice, computerChoice) {
+  console.clear();
+  displayBreak();
   prompt(`You chose ${choice}.`);
   prompt(`Computer chose ${computerChoice}.`);
-
+  displayBreak();
   if (userWon(choice, computerChoice)) {
-    prompt(`You win!`);
+    prompt(`userRoundWinner`);
   } else if (computerWon(choice, computerChoice)) {
-    prompt(`Computer won!`);
+    prompt(`computerRoundWinner`);
   } else {
     prompt(`It's a tie!`);
   }
+  displayBreak();
 }
 
 function displayGrandWinner(userTally, computerTally) {
   if (userTally >= 3) {
-    prompt(`You're the grand winner!`);
+    displayBreak();
+    prompt(`userGrandWinner`);
+    displayBreak();
   } else if (computerTally >= 3) {
-    prompt(`Computer is the grand winner!`);
+    displayBreak();
+    prompt(`computerGrandWinner`);
+    displayBreak();
+  }
+  readline.question(prompt(`pressEnter`));
+}
+
+function computeRoundWinner(choice, computerChoice) {
+  if (userWon(choice, computerChoice)) {
+    return 'user';
+  } else if (computerWon(choice, computerChoice)) {
+    return 'computer';
+  } else {
+    return 'tie';
   }
 }
 
@@ -136,47 +177,44 @@ function computeGrandWinner(userTally, computerTally) {
   return null;
 }
 
-function wantsToGoAgain(answer) {
-  return answer[0] === 'y';
-}
-
 function askToRepeat() {
-
-  prompt(`Would you like to play again? (y/n)`);
+  console.clear();
+  prompt(`playAgain`);
   let answer = readline.question().toLowerCase();
 
   while (answer[0] !== 'y' && answer[0] !== 'n') {
-    prompt(`Please enter 'y' or 'n'`);
+    prompt(`yesOrNo`);
     answer = readline.question().toLowerCase();
   }
   return answer;
 }
 
-function computeWinner(choice, computerChoice) {
-  if (userWon(choice, computerChoice)) {
-    return 'user';
-  } else if (computerWon(choice, computerChoice)) {
-    return 'computer';
-  } else {
-    return 'tie';
-  }
+function wantsToGoAgain(answer) {
+  return answer[0] === 'y';
 }
 
 let goAgain;
-let userTally = 0;
-let computerTally = 0;
-let grandWinner;
 
 do {
 
+  let userTally = 0;
+  let computerTally = 0;
+  let grandWinner = null;
+  let round = 1;
+
+  displayWelcome();
+
   while (!grandWinner) {
-    let choice = displayAndValidateChoice();
+
+    displayRound(round);
+
+    let choice = validateAndDisplayChoice();
     let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
     let computerChoice = VALID_CHOICES[randomIndex];
 
-    displayWinner(choice, computerChoice);
+    displayRoundWinner(choice, computerChoice);
 
-    let winner = computeWinner(choice, computerChoice);
+    let winner = computeRoundWinner(choice, computerChoice);
 
     if (winner === 'user') {
       userTally += 1;
@@ -189,6 +227,7 @@ do {
     displayGrandWinner(userTally, computerTally);
 
     grandWinner = computeGrandWinner(userTally, computerTally);
+    round += 1;
   }
 
   goAgain = askToRepeat();
