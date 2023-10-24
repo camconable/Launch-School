@@ -25,5 +25,7 @@
 
 ## Core ##
 ### JS101 ###
-**Lesson 2: Small Programs**
-- [ ] Calculator
+**Lesson 2**
+- [x] [Calculator] (https://github.com/cammo789/Launch-School/blob/main/backEnd/JS101/lesson_2/calculator.js)
+- [x] [Mortgage Calculator](https://github.com/cammo789/Launch-School/blob/main/backEnd/JS101/lesson_2/mortgageCalculator.js)
+- [x] [Rock Paper Scissors Spock Lizard](https://github.com/cammo789/Launch-School/blob/main/backEnd/JS101/lesson_2/exercises/rps.js)
