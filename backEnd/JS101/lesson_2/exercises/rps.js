@@ -3,6 +3,18 @@ const MESSAGES = require('./rps_messages.json');
 const VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
 const TALLY_TO_WIN = 3;
 const conflictCharacters = computeConflictCharacters(VALID_CHOICES);
+const combinations = [
+  ['rock', 'scissors'],
+  ['scissors', 'paper'],
+  ['paper', 'rock'],
+  ['rock', 'lizard'],
+  ['lizard', 'spock'],
+  ['spock', 'scissors'],
+  ['scissors', 'lizard'],
+  ['lizard', 'paper'],
+  ['spock', 'rock'],
+  ['paper', 'spock']
+];
 
 function prompt(msg) {
   if (Object.keys(MESSAGES).includes(msg)) {
@@ -71,35 +83,35 @@ function findFullLengthChoice(input, array) {
   return null;
 }
 
-function userWon(choice, computerChoice) {
-  return ((choice === 'rock' && computerChoice === 'scissors') ||
-      (choice === 'scissors' && computerChoice === 'paper') ||
-      (choice === 'paper' && computerChoice === 'rock') ||
-      (choice === 'rock' && computerChoice === 'lizard') ||
-      (choice === 'lizard' && computerChoice === 'spock') ||
-      (choice === 'spock' && computerChoice === 'scissors') ||
-      (choice === 'scissors' && computerChoice === 'lizard') ||
-      (choice === 'lizard' && computerChoice === 'paper') ||
-      (choice === 'spock' && computerChoice === 'rock') ||
-      (choice === 'paper' && computerChoice === 'spock'));
-}
+// function userWon(choice, computerChoice) {
+//   return ((choice === 'rock' && computerChoice === 'scissors') ||
+//       (choice === 'scissors' && computerChoice === 'paper') ||
+//       (choice === 'paper' && computerChoice === 'rock') ||
+//       (choice === 'rock' && computerChoice === 'lizard') ||
+//       (choice === 'lizard' && computerChoice === 'spock') ||
+//       (choice === 'spock' && computerChoice === 'scissors') ||
+//       (choice === 'scissors' && computerChoice === 'lizard') ||
+//       (choice === 'lizard' && computerChoice === 'paper') ||
+//       (choice === 'spock' && computerChoice === 'rock') ||
+//       (choice === 'paper' && computerChoice === 'spock'));
+// }
 
-function computerWon(choice, computerChoice) {
-  return ((computerChoice === 'rock' && choice === 'scissors') ||
-      (computerChoice === 'scissors' && choice === 'paper') ||
-      (computerChoice === 'paper' && choice === 'rock') ||
-      (computerChoice === 'rock' && choice === 'lizard') ||
-      (computerChoice === 'lizard' && choice === 'spock') ||
-      (computerChoice === 'spock' && choice === 'scissors') ||
-      (computerChoice === 'scissors' && choice === 'lizard') ||
-      (computerChoice === 'lizard' && choice === 'paper') ||
-      (computerChoice === 'spock' && choice === 'rock') ||
-      (computerChoice === 'paper' && choice === 'spock'));
-}
+// function computerWon(choice, computerChoice) {
+//   return ((computerChoice === 'rock' && choice === 'scissors') ||
+//       (computerChoice === 'scissors' && choice === 'paper') ||
+//       (computerChoice === 'paper' && choice === 'rock') ||
+//       (computerChoice === 'rock' && choice === 'lizard') ||
+//       (computerChoice === 'lizard' && choice === 'spock') ||
+//       (computerChoice === 'spock' && choice === 'scissors') ||
+//       (computerChoice === 'scissors' && choice === 'lizard') ||
+//       (computerChoice === 'lizard' && choice === 'paper') ||
+//       (computerChoice === 'spock' && choice === 'rock') ||
+//       (computerChoice === 'paper' && choice === 'spock'));
+// }
 
 function validateAndDisplayChoice() {
   prompt(`Choose one: ${VALID_CHOICES.join(', ')}`);
-  let choice = readline.question();
+  let choice = readline.question().toLowerCase();
 
   conflictCharacters.forEach((element) => {
     if (choice === element) {
@@ -128,9 +140,10 @@ function playRoundGetWinner(roundNum) {
   let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
   let computerChoice = VALID_CHOICES[randomIndex];
 
-  displayRoundWinner(choice, computerChoice);
+  let winner = computeRoundWinner(choice, computerChoice);
+  displayRoundWinner(choice, computerChoice, winner);
 
-  return computeRoundWinner(choice, computerChoice);
+  return winner;
 }
 
 function displayRound(num) {
@@ -141,24 +154,34 @@ function displayRound(num) {
 }
 
 function computeRoundWinner(choice, computerChoice) {
-  if (userWon(choice, computerChoice)) {
-    return 'user';
-  } else if (computerWon(choice, computerChoice)) {
-    return 'computer';
-  } else {
-    return 'tie';
+  // if (userWon(choice, computerChoice)) {
+  //   return 'user';
+  // } else if (computerWon(choice, computerChoice)) {
+  //   return 'computer';
+  // } else {
+  //   return 'tie';
+  // }
+  for (const element of combinations) {
+    if ((element[0] === choice) && (element[1] === computerChoice)) {
+      return 'user';
+    } else if ((element[0] === computerChoice) && (element[1] === choice)) {
+      return 'computer';
+    } else {
+      continue;
+    }
   }
+  return 'tie';
 }
 
-function displayRoundWinner(choice, computerChoice) {
+function displayRoundWinner(choice, computerChoice, winner) {
   console.clear();
   displayShortBreak();
   prompt(`You chose ${choice}.`);
   prompt(`Computer chose ${computerChoice}.`);
   displayShortBreak();
-  if (userWon(choice, computerChoice)) {
+  if (winner === 'user') {
     prompt(`userRoundWinner`);
-  } else if (computerWon(choice, computerChoice)) {
+  } else if (winner === 'computer') {
     prompt(`computerRoundWinner`);
   } else {
     prompt(`tie`);
@@ -209,29 +232,40 @@ function displayGrandWinner(userTally, computerTally) {
   readline.question(prompt(`pressEnter`));
 }
 
-function askToRepeat() {
+function goAgain() {
   console.clear();
   prompt(`playAgain`);
   let answer = readline.question().toLowerCase();
 
-  while (answer[0] !== 'y' && answer[0] !== 'n') {
+  while (!isYes(answer) && !isNo(answer)) {
     prompt(`yesOrNo`);
     answer = readline.question().toLowerCase();
   }
-  return answer;
+
+  if (isYes(answer)) {
+    return true;
+  } else if (isNo(answer)) {
+    return false;
+  }
+  return undefined;
 }
 
-function wantsToGoAgain(answer) {
-  return answer[0] === 'y';
+function isYes(input) {
+  input = input.toLowerCase();
+  return (input === 'y' || input === 'yes');
+}
+
+function isNo(input) {
+  input = input.toLowerCase();
+  return (input === 'n' || input === 'no');
 }
 
 function goodbye() {
+  console.clear();
   displayLongBreak(2);
   prompt(`goodBye`);
   displayLongBreak(2);
 }
-
-let goAgain;
 
 do {
 
@@ -257,8 +291,6 @@ do {
     roundNum += 1;
   }
 
-  goAgain = askToRepeat();
-
-} while (wantsToGoAgain(goAgain));
+} while (goAgain());
 
 goodbye();
