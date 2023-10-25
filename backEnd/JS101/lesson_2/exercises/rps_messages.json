@@ -8,9 +8,11 @@
   "conflictCharacter": "Please enter something more specific. You entered: ",
   "userRoundWinner": "You won this round!",
   "computerRoundWinner": "Computer won this round!",
+  "tie": "It's a tie!",
   "currentScore": "The current score is: ",
   "userGrandWinner": "You're the GRAND WINNER!",
   "computerGrandWinner": "Computer is the GRAND WINNER!",
   "playAgain": "Would you like to play again? (y/n)",
-  "yesOrNo": "Please enter 'y' or 'n'"
+  "yesOrNo": "Please enter 'y' or 'n'",
+  "goodBye": "Thanks for playing! Enjoy your day!"
 }

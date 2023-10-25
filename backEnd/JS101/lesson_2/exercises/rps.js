@@ -138,7 +138,7 @@ function displayRoundWinner(choice, computerChoice) {
   } else if (computerWon(choice, computerChoice)) {
     prompt(`computerRoundWinner`);
   } else {
-    prompt(`It's a tie!`);
+    prompt(`tie`);
   }
   displayShortBreak();
 }
@@ -202,6 +202,35 @@ function wantsToGoAgain(answer) {
   return answer[0] === 'y';
 }
 
+function playRoundGetWinner(roundNum) {
+
+  displayRound(roundNum);
+
+  let choice = validateAndDisplayChoice();
+  let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
+  let computerChoice = VALID_CHOICES[randomIndex];
+
+  displayRoundWinner(choice, computerChoice);
+
+  return computeRoundWinner(choice, computerChoice);
+}
+
+function incrementTally(winner) {
+  if (winner === 'user') {
+    return [1, 0];
+  } else if (winner === 'computer') {
+    return [0, 1];
+  } else {
+    return [0, 0];
+  }
+}
+
+function goodbye() {
+  displayLongBreak(2);
+  prompt(`goodBye`);
+  displayLongBreak(2);
+}
+
 let goAgain;
 
 do {
@@ -209,38 +238,27 @@ do {
   let userTally = 0;
   let computerTally = 0;
   let grandWinner = null;
-  let round = 1;
+  let roundNum = 1;
 
   displayWelcome();
 
   while (!grandWinner) {
 
-    displayRound(round);
+    let winner = playRoundGetWinner(roundNum);
 
-    let choice = validateAndDisplayChoice();
-    let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
-    let computerChoice = VALID_CHOICES[randomIndex];
-
-    displayRoundWinner(choice, computerChoice);
-
-    let winner = computeRoundWinner(choice, computerChoice);
-
-    if (winner === 'user') {
-      userTally += 1;
-    } else if (winner === 'computer') {
-      computerTally += 1;
-    }
+    userTally += incrementTally(winner)[0];
+    computerTally += incrementTally(winner)[1];
 
     displayCurrentScore(userTally, computerTally);
 
     displayGrandWinner(userTally, computerTally);
 
     grandWinner = computeGrandWinner(userTally, computerTally);
-    round += 1;
+    roundNum += 1;
   }
 
   goAgain = askToRepeat();
 
 } while (wantsToGoAgain(goAgain));
 
-
+goodbye();
