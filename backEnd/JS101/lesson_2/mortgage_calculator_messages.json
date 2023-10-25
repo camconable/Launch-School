@@ -1,5 +1,5 @@
 {
-  "break": "------------------------------------------------------------------",
+  "break": "-----------------------------------",
   "welcome": "Welcome to the Mortgage Calculator!",
   "goodbye": "Thanks for using the Mortgage Calculator. Good luck house hunting!",
   "askIfInterest": "Does this loan have interest?\nPlease enter 1 for Yes or 2 for No: ",
