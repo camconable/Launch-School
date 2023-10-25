@@ -127,6 +127,7 @@ let goAgain;
 
 do {
   console.clear();
+  displayBreak();
   prompt('welcome');
   displayBreak();
 
