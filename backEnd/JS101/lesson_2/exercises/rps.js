@@ -32,13 +32,6 @@ function displayShortBreak() {
   prompt(`breakShort`);
 }
 
-function displayRound(num) {
-  console.clear();
-  displayShortBreak();
-  prompt(`Round: ${num}!`);
-  displayShortBreak();
-}
-
 function computeConflictCharacters(VALID_CHOICES) {
   let charArray = [];
   let conflictCharArray = [];
@@ -127,6 +120,36 @@ function validateAndDisplayChoice() {
   return choice;
 }
 
+function playRoundGetWinner(roundNum) {
+
+  displayRound(roundNum);
+
+  let choice = validateAndDisplayChoice();
+  let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
+  let computerChoice = VALID_CHOICES[randomIndex];
+
+  displayRoundWinner(choice, computerChoice);
+
+  return computeRoundWinner(choice, computerChoice);
+}
+
+function displayRound(num) {
+  console.clear();
+  displayShortBreak();
+  prompt(`Round: ${num}!`);
+  displayShortBreak();
+}
+
+function computeRoundWinner(choice, computerChoice) {
+  if (userWon(choice, computerChoice)) {
+    return 'user';
+  } else if (computerWon(choice, computerChoice)) {
+    return 'computer';
+  } else {
+    return 'tie';
+  }
+}
+
 function displayRoundWinner(choice, computerChoice) {
   console.clear();
   displayShortBreak();
@@ -143,11 +166,30 @@ function displayRoundWinner(choice, computerChoice) {
   displayShortBreak();
 }
 
+function incrementTally(winner) {
+  if (winner === 'user') {
+    return [1, 0];
+  } else if (winner === 'computer') {
+    return [0, 1];
+  } else {
+    return [0, 0];
+  }
+}
+
 function displayCurrentScore(userTally, computerTally) {
   prompt(`currentScore`);
   prompt(`You: ${userTally}`);
   prompt(`Computer: ${computerTally}`);
   displayShortBreak();
+}
+
+function computeGrandWinner(userTally, computerTally) {
+  if (userTally >= TALLY_TO_WIN) {
+    return 'user';
+  } else if (computerTally >= TALLY_TO_WIN) {
+    return 'computer';
+  }
+  return null;
 }
 
 function displayGrandWinner(userTally, computerTally) {
@@ -167,25 +209,6 @@ function displayGrandWinner(userTally, computerTally) {
   readline.question(prompt(`pressEnter`));
 }
 
-function computeRoundWinner(choice, computerChoice) {
-  if (userWon(choice, computerChoice)) {
-    return 'user';
-  } else if (computerWon(choice, computerChoice)) {
-    return 'computer';
-  } else {
-    return 'tie';
-  }
-}
-
-function computeGrandWinner(userTally, computerTally) {
-  if (userTally >= TALLY_TO_WIN) {
-    return 'user';
-  } else if (computerTally >= TALLY_TO_WIN) {
-    return 'computer';
-  }
-  return null;
-}
-
 function askToRepeat() {
   console.clear();
   prompt(`playAgain`);
@@ -200,29 +223,6 @@ function askToRepeat() {
 
 function wantsToGoAgain(answer) {
   return answer[0] === 'y';
-}
-
-function playRoundGetWinner(roundNum) {
-
-  displayRound(roundNum);
-
-  let choice = validateAndDisplayChoice();
-  let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
-  let computerChoice = VALID_CHOICES[randomIndex];
-
-  displayRoundWinner(choice, computerChoice);
-
-  return computeRoundWinner(choice, computerChoice);
-}
-
-function incrementTally(winner) {
-  if (winner === 'user') {
-    return [1, 0];
-  } else if (winner === 'computer') {
-    return [0, 1];
-  } else {
-    return [0, 0];
-  }
 }
 
 function goodbye() {
