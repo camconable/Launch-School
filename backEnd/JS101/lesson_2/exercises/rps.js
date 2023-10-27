@@ -1,8 +1,13 @@
 const readline = require('readline-sync');
 const MESSAGES = require('./rps_messages.json');
-const VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
 const TALLY_TO_WIN = 3;
-const conflictCharacters = computeConflictCharacters(VALID_CHOICES);
+const VALID_CHOICES = {
+  r   : "rock",
+  p   : "paper",
+  sc  : "scissors",
+  sp  : "spock",
+  l   : "lizard"
+};
 const combinations = [
   ['rock', 'scissors'],
   ['scissors', 'paper'],
@@ -44,104 +49,49 @@ function displayShortBreak() {
   prompt(`breakShort`);
 }
 
-function computeConflictCharacters(VALID_CHOICES) {
-  let charArray = [];
-  let conflictCharArray = [];
+function isValid(input) {
+  return  Object.keys(VALID_CHOICES).includes(input) ||
+          Object.values(VALID_CHOICES).includes(input);
+}
 
-  VALID_CHOICES.forEach((element) => charArray.push(element[0]));
-
-  for (const element of charArray) {
-    if (itemCounter(charArray, element) > 1) {
-      conflictCharArray.push(element);
+function getFullChoice(input) {
+  for (let prop in VALID_CHOICES) {
+    if (input === prop || input === VALID_CHOICES[prop]) {
+      return VALID_CHOICES[prop];
     }
   }
-  return removeDuplicates(conflictCharArray);
-}
-
-function itemCounter(array, index) {
-  return array.filter((x) => x === index).length;
-}
-
-function removeDuplicates(array) {
-  return array.filter((value, index) => array.indexOf(value) === index);
-}
-
-function findFullLengthChoice(input, array) {
-  for (const element of array) {
-    if (input.length === 1) {
-      if (input === element[0]) {
-        return element;
-      }
-    }
-    if (input.length === 2) {
-      if (input === (element[0] + element[1])) {
-        return element;
-      }
-    }
-  }
-
   return null;
 }
 
-// function userWon(choice, computerChoice) {
-//   return ((choice === 'rock' && computerChoice === 'scissors') ||
-//       (choice === 'scissors' && computerChoice === 'paper') ||
-//       (choice === 'paper' && computerChoice === 'rock') ||
-//       (choice === 'rock' && computerChoice === 'lizard') ||
-//       (choice === 'lizard' && computerChoice === 'spock') ||
-//       (choice === 'spock' && computerChoice === 'scissors') ||
-//       (choice === 'scissors' && computerChoice === 'lizard') ||
-//       (choice === 'lizard' && computerChoice === 'paper') ||
-//       (choice === 'spock' && computerChoice === 'rock') ||
-//       (choice === 'paper' && computerChoice === 'spock'));
-// }
-
-// function computerWon(choice, computerChoice) {
-//   return ((computerChoice === 'rock' && choice === 'scissors') ||
-//       (computerChoice === 'scissors' && choice === 'paper') ||
-//       (computerChoice === 'paper' && choice === 'rock') ||
-//       (computerChoice === 'rock' && choice === 'lizard') ||
-//       (computerChoice === 'lizard' && choice === 'spock') ||
-//       (computerChoice === 'spock' && choice === 'scissors') ||
-//       (computerChoice === 'scissors' && choice === 'lizard') ||
-//       (computerChoice === 'lizard' && choice === 'paper') ||
-//       (computerChoice === 'spock' && choice === 'rock') ||
-//       (computerChoice === 'paper' && choice === 'spock'));
-// }
-
 function validateAndDisplayChoice() {
-  prompt(`Choose one: ${VALID_CHOICES.join(', ')}`);
+  prompt(`Choose one: ${Object.values(VALID_CHOICES).join(', ')}`);
   let choice = readline.question().toLowerCase();
 
-  conflictCharacters.forEach((element) => {
-    if (choice === element) {
-      console.log(`You entered: ${element}, please enter something more specific.`);
-      choice = validateAndDisplayChoice();
-    }
-  });
-
-  if (choice.length <= 2) {
-    choice = findFullLengthChoice(choice, VALID_CHOICES);
-  }
-
-  while (!VALID_CHOICES.includes(choice)) {
+  while (!isValid(choice)) {
     prompt(`invalidChoice`);
     choice = validateAndDisplayChoice();
   }
 
-  return choice;
+  return getFullChoice(choice);
+}
+
+function getComputerChoice() {
+  let randomIndex = Math.floor(Math.random() *
+  Object.values(VALID_CHOICES).length);
+
+  return Object.values(VALID_CHOICES)[randomIndex];
 }
 
 function playRoundGetWinner(roundNum) {
 
   displayRound(roundNum);
 
-  let choice = validateAndDisplayChoice();
-  let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
-  let computerChoice = VALID_CHOICES[randomIndex];
+  let playerChoice = validateAndDisplayChoice();
 
-  let winner = computeRoundWinner(choice, computerChoice);
-  displayRoundWinner(choice, computerChoice, winner);
+  let computerChoice = getComputerChoice();
+
+  let winner = computeRoundWinner(playerChoice, computerChoice);
+  displayRoundWinner(playerChoice, computerChoice, winner);
 
   return winner;
 }
@@ -153,18 +103,12 @@ function displayRound(num) {
   displayShortBreak();
 }
 
-function computeRoundWinner(choice, computerChoice) {
-  // if (userWon(choice, computerChoice)) {
-  //   return 'user';
-  // } else if (computerWon(choice, computerChoice)) {
-  //   return 'computer';
-  // } else {
-  //   return 'tie';
-  // }
+function computeRoundWinner(playerChoice, computerChoice) {
   for (const element of combinations) {
-    if ((element[0] === choice) && (element[1] === computerChoice)) {
+    if ((element[0] === playerChoice) && (element[1] === computerChoice)) {
       return 'user';
-    } else if ((element[0] === computerChoice) && (element[1] === choice)) {
+    } else if (
+      (element[0] === computerChoice) && (element[1] === playerChoice)) {
       return 'computer';
     } else {
       continue;
@@ -173,10 +117,10 @@ function computeRoundWinner(choice, computerChoice) {
   return 'tie';
 }
 
-function displayRoundWinner(choice, computerChoice, winner) {
+function displayRoundWinner(playerChoice, computerChoice, winner) {
   console.clear();
   displayShortBreak();
-  prompt(`You chose ${choice}.`);
+  prompt(`You chose ${playerChoice}.`);
   prompt(`Computer chose ${computerChoice}.`);
   displayShortBreak();
   if (winner === 'user') {
