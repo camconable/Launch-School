@@ -26,7 +26,7 @@
 
 - [x] Both of your computeRoundWinner and displayRoundWinner functions call the userWon and computerWon functions. Can you think of a way you could use the return value of computeRoundWinner inside displayRoundWinner?
 
-  - **completed 10/25/23 - modified playRoundGetWinner to capture the return value of computeRoundWinner, changed function declaration of displayRoundWinner to pass in winner as an additional argument. Removed userWon and computerWon from displayRoundWinner since this is no longer necessary.**
+  - **completed 10/25/23 - modified playRoundGetWinner to capture the return value of computeRoundWinner, changed function declaration of displayRoundWinner to pass in winner as an additional parameter. Removed userWon and computerWon from displayRoundWinner since this is no longer necessary.**
   
 - [x] When a functions needs both choices, it may be best to name the first one playerChoice or something similar to avoid confusion when using that inside the function
 
