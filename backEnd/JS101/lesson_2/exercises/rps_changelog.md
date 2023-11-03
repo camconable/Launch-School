@@ -22,7 +22,7 @@
 
 - [x] Your userWon and computerWon functions contain a lot of conditionals, and duplication. Can you think how you might extract those combinations into a constant and use that to calculate a winner?
 
-  - **completed 10/25/23 - removed long list of IF conditionals, upgraded computeRoundWinner, put combinations into a 2d array constant. computeRoundWinner now cycles through the 2d array instead of checking all the IF conditionals**
+  - **completed 10/25/23 - removed long list of IF conditionals, upgraded computeRoundWinner, put combinations into a 2d array constant. computeRoundWinner now loops through the 2d array instead of checking all the IF conditionals, which is more efficient**
 
 - [x] Both of your computeRoundWinner and displayRoundWinner functions call the userWon and computerWon functions. Can you think of a way you could use the return value of computeRoundWinner inside displayRoundWinner?
 
