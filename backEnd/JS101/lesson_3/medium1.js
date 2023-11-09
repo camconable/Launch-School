@@ -229,7 +229,10 @@
 
 // Question 9
 
-// Function and method calls can take expressions as arguments. Suppose we define a function named rps as follows, which follows the classic rules of the rock-paper-scissors game, but with a slight twist: in the event of a tie, it just returns the choice made by both players.
+// Function and method calls can take expressions as arguments.
+// Suppose we define a function named rps as follows, which follows the
+// classic rules of the rock-paper-scissors game, but with a slight twist:
+// in the event of a tie, it just returns the choice made by both players.
 
 // function rps(fist1, fist2) {
 //   if (fist1 === "rock") {
@@ -245,6 +248,12 @@
 
 // console.log(rps(rps(rps("rock", "paper"), rps("rock", "scissors")), "rock"));
 
+// (rps(rps("paper", "rock"), "rock"))
+// (rps("paper", "rock"))
+// ("paper")
+
+// "paper" is logged to console
+
 // Question 10
 
 // Consider these two simple functions:
@@ -259,4 +268,18 @@
 
 // What will the following function invocation return?
 
-// bar(foo());
+// console.log(bar(foo()));
+
+// bar(foo(param = "no"));
+// bar("yes");
+// "no"
+
+// "no" is logged to console. When foo() evaluates,
+// no argument is being passed to the function, which means
+// the function scoped parameter param is assigned "no"
+// foo() returns "yes" regardless of what param is assigned to
+// bar() is then passed "yes", which means param is assigned
+// "yes" within the function. param is only assigned "no" when
+// no value is passed as an argument to bar(). As a result,
+// within bar(), the ternary expression evaluates to "no", which is
+// returned from the bar function. Nothing is logged to the console.
