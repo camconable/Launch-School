@@ -2,7 +2,7 @@
 
 // Examples:
 
-logInBox('To boldly go where no one has gone before.', 7);
+logInBox('To boldly go where no one has gone before.', 18);
 
 // +--------------------------------------------+
 // |                                            |
@@ -32,16 +32,16 @@ function logInBox(input, maxWidth = input.length) {
   let spacedLine = fillerLine(maxWidth, '|', ' ');
   let userInputLine = inputLine(input, maxWidth);
 
-  // let finalString = `${dashedLine}\n${spacedLine}\n${userInputLine}\n${spacedLine}\n${dashedLine}`;
+  let finalString = `${dashedLine}\n${spacedLine}\n${userInputLine}${spacedLine}\n${dashedLine}`;
 
-  // console.log(finalString);
+  console.log(finalString);
 }
 
 
 function fillerLine(inputLength, outerChar, innerChar) {
   let finalString = '' + outerChar;
 
-  for (let idx = 0; idx < inputLength + 2; idx += 1) {
+  for (let idx = 1; idx < inputLength + 3; idx += 1) {
     finalString += innerChar;
   }
 
@@ -49,20 +49,47 @@ function fillerLine(inputLength, outerChar, innerChar) {
 }
 
 function inputLine(input, maxWidth) {
-  // if (input.length >= maxWidth) {
-  //   input = input.substring(0, maxWidth);
-  // }
-  
-  let numInputLines = Math.floor(input.length / maxWidth);
 
-  // put input string into array with numElements = numInputLines
-  let stringArray = input.slice(0, numInputLines);
+  if (input) {
+    let stringArray = [];
 
-  console.log(stringArray);
-  // line 1: '| ' + inputArray[0] + ' |'
-  // line 1: '| ' + inputArray[1] + ' |'
-  // line 1: '| ' + inputArray[2] + ' |'
-  // line 1: '| ' + inputArray[3] + ' |'
+    for (let idx = 0; idx < input.length; idx += maxWidth) {
+      stringArray.push(input.slice(idx, idx + maxWidth));
+    }
 
-  return '| ' + input + ' |';
+    if (stringArray[stringArray.length - 1].length < maxWidth) {
+      stringArray[stringArray.length - 1] = padLastLine(stringArray, maxWidth);
+    }
+
+    stringArray = addVertBars(stringArray);
+
+    return buildInputString(stringArray);
+
+  } else {
+    return `|  |\n`;
+  }
+}
+
+function padLastLine(stringArray, maxWidth) {
+  let spacePadding = maxWidth - stringArray[stringArray.length - 1].length;
+  const space = ' ';
+
+  return stringArray[stringArray.length - 1].concat(space.repeat(spacePadding));
+}
+
+function addVertBars(stringArray) {
+  for (let [idx, elem] of stringArray.entries()) {
+    stringArray[idx] = `| ${elem} |`;
+  }
+
+  return stringArray;
+}
+
+function buildInputString(stringArray) {
+  let inputLinesString = '';
+  stringArray.forEach((elem) => {
+    inputLinesString += elem + '\n';
+  });
+
+  return inputLinesString;
 }
