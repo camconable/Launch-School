@@ -2,21 +2,21 @@
 
 // Will the following functions return the same results?
 
-function first() {
-  return {
-    prop1: "hi there",
-  };
-}
+// function first() {
+//   return {
+//     prop1: "hi there",
+//   };
+// }
 
-function second() {
-  return;
-  {
-    prop1: "hi there";
-  }
-}
+// function second() {
+//   return;
+//   {
+//     prop1: "hi there";
+//   }
+// }
 
-console.log(first());
-console.log(second());
+// console.log(first());
+// console.log(second());
 
 // Try to answer without running the code or looking at the solution.
 
@@ -70,9 +70,9 @@ console.log(second());
 // A)
 
 // function messWithVars(one, two, three) {
-//   one = two;
-//   two = three;
-//   three = one;
+//   one = two;    // one = ['two']
+//   two = three;  // two = ['three']
+//   three = one;  // three = ['two']
 // }
 
 // let one = ["one"];
@@ -84,6 +84,17 @@ console.log(second());
 // console.log(`one is: ${one}`);
 // console.log(`two is: ${two}`);
 // console.log(`three is: ${three}`);
+
+// 'one is: ['two']'
+// 'two is: ['three']'
+// 'three is: ['two']'
+
+// Cam's revised answer based on running code:
+// Block (function) scope is in effect here.
+// the parameters are assigned those values within the function,
+// but those parameters are block scoped and don't exist when the function
+// ends. The code logs the output of the variables assigned on
+// lines 7 - 9
 
 // B)
 
@@ -102,6 +113,12 @@ console.log(second());
 // console.log(`one is: ${one}`);
 // console.log(`two is: ${two}`);
 // console.log(`three is: ${three}`);
+
+// 'one is ['two']
+// 'two is ['three']
+// 'three is ['one']
+
+// WRONG
 
 // C)
 
@@ -139,6 +156,21 @@ console.log(second());
 
 // let myBoo = boo(halloweenCollection["greet"]);
 
+// VARIABLES
+// boo (function), scare (parameter), myBoo (in boo()), myBoo (global)
+// halloweenCollection
+
+// PRIMITIVES: 12 total
+// '!!!', 'HAPPY HALLOWEEN', 'HAPPY HALLOWEEN!!!',
+// console.log(myBoo) => copy of string stored in myBoo is logged to console
+// object properties: 'greet', 'scare', 'wish'
+// object property values: 'Happy Halloween', 'Boo',
+// 'May all your pumpkins be glowing',
+// undefined, 'greet' (passed as arg on line 12)
+
+// OBJECTS
+// {} literal referenced by halloweenCollection, boo function object
+
 // Question 5
 
 // Ben was tasked to write a simple JavaScript function to
@@ -153,15 +185,30 @@ console.log(second());
 
 // function isDotSeparatedIpAddress(inputString) {
 //   let dotSeparatedWords = inputString.split(".");
-//   while (dotSeparatedWords.length > 0) {
-//     let word = dotSeparatedWords.pop();
-//     if (!isAnIpNumber(word)) {
-//       break;
+//   if (dotSeparatedWords.length === 4) {
+//     while (dotSeparatedWords.length > 0) {
+//       let word = dotSeparatedWords.pop();
+//       if (!isAnIpNumber(word)) {
+//         return false;
+//       }
 //     }
+//     return true;
+//   } else {
+//     return false;
 //   }
-
-//   return true;
 // }
+
+// function isAnIpNumber(str) {
+//   if (/^\d+$/.test(str)) {
+//     let number = Number(str);
+//     return number >= 0 && number <= 255;
+//   }
+//   return false;
+// }
+
+// console.log(isDotSeparatedIpAddress('4.5.5'));
+// console.log(isDotSeparatedIpAddress('10.10.10.10'));
+// console.log(isDotSeparatedIpAddress('10.10.10.10.23'));
 
 // Alyssa reviewed Ben's code and said, "It's a good start, but
 // you missed a few things. You're not returning a false condition,
