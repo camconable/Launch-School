@@ -121,7 +121,7 @@ function countNumbers(string) {
 
 // how many sub-strings 'hel' in a string
 
-console.log(howManySubstrings('hello there, i need help with my helicopter', 'hel')); // => 3
+// console.log(howManySubstrings('hello there, i need help with my helicopter', 'hel')); // => 3
 
 // input: string, substring (search string)
 // output: number of occurrences of provided search string (substring)
@@ -150,11 +150,27 @@ console.log(howManySubstrings('hello there, i need help with my helicopter', 'he
 
 // how many 'car' in an array
 
-// how many different types of car in an array and how many of each type: ['Lambo', 'Tesla', 'Mercedes', 'Mercedes', 'Fiat', 'Lambo', 'Lambo']
+// how many different types of car in an array and how many of each type:
+console.log(numDiffCars(['Lambo', 'Tesla', 'Mercedes', 'Mercedes', 'Fiat', 'Lambo', 'Lambo'])); // => 4
 
 // input: array of strings
-// output: object of cars and how many of each
+// output: number of different types of elements
 
 // sort array
 // remove duplicates
+//   if a[0] === a[1], remove a[1], decrement idx
+//   if a[0] !== a[1], continue to a[1]
 // count array length
+
+function numDiffCars(array) {
+  let sortedArr = array.sort();
+
+  for (let idx = 0; idx < sortedArr.length; idx += 1) {
+    if (sortedArr[idx] === sortedArr[idx + 1]) {
+      sortedArr.splice(sortedArr.indexOf(sortedArr[idx]), 1);
+      idx -= 1;
+    }
+  }
+
+  return sortedArr.length;
+}
