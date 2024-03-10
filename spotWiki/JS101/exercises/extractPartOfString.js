@@ -38,10 +38,13 @@
 // }
 
 
+
+// **************************INCOMPLETE**************************
+
 // - Create a function that takes two strings as arguments a return an array of sub strings that are the same as the second argument. For example:
 
 
-extractStr('abcdefabcdefabcdef abcdefg', 'abc'); //['abc', 'abc', 'abc', 'abc'];
+// extractStr('abcdefabcdefabcdef abcdefg', 'abc'); //['abc', 'abc', 'abc', 'abc'];
 
 
 
@@ -58,17 +61,30 @@ extractStr('abcdefabcdefabcdef abcdefg', 'abc'); //['abc', 'abc', 'abc', 'abc'];
 
 
 
-function extractStr(string1, string2) {
-  let string1Array = string1.split('');
-  for (let idx = 0; idx < string1Array.length; idx += 0) {
-    
-  }
+// function extractStr(string1, string2) {
+//   let string1Array = string1.split('');
+//   for (let idx = 0; idx < string1Array.length; idx += 0) {
+
+//   }
+// }
+// **************************INCOMPLETE**************************
+
+
+// - Create a function that takes a string as an argument and return an array that only contains numeric characters that the input string contained. For Example:
+
+
+extractStr('abcd123acc 227 0 ,*&^a'); //['1', '2', '3', '2', '2', '7', '0'];
+
+// input: 2 strings
+// output: array of characters, excluding chars from input string
+
+// convert string1 to array1
+// convert string2 to array2
+// loop through array1,
+//   if element is not in array2, push to finalArray
+
+function extractStr(string1) {
+  let array1 = string1.split(' ').join('').split('');
+
+  return array1.filter((elem) => Number.isInteger(Number(elem)));
 }
-
-
-
-// - Create a function that takes a string as an argument and return an array of all the alphanumeric characters that the input string contained. For Example:
-
-
-// etractStr('abcd123acc 227 0 , *&^a'); //['1', '2', '3', '2', '2', '7', '0'];
-
