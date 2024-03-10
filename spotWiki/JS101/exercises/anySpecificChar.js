@@ -2,25 +2,32 @@
 // Create a function that takes two strings as an argument and returns a boolean value, true if the first string contains the second one. For example:
 
 
-hasString('abcd', 'd'); //true
-// hasString('abcd', 'f'); //false
-// hasString('abcd', 'cd'); //true
+console.log(hasString('abcd', 'd')); //true
+console.log(hasString('abcd', 'f')); //false
+console.log(hasString('abcd', 'bcd')); //true
 
 // input: two strings
 // output: boolean, true if first string contains second one
 
 // loop through string1
-// if string2 is within string1, true
-//   if first char of string2 is in string1,
-//     get chars of string2 length, from string1, store in compareString
-//       loop through string1 string2.length times, concat every elem into compareString
+// if first char of string2 is in string1,
+//     get chars, from string1, store in compareString
+//        concat elem starting at index where string2[0] is
 // if compareString === string2 return true
 
 function hasString(string1, string2) {
+  let bool = false;
   let compareString = '';
-  for (let char of string1.split('')) {
-   if (string2[0].includes(char)) {
-
-   } 
+  let string1Array = string1.split('');
+  for (let char of string1Array) {
+    if (string2[0].includes(char)) {
+      for (let idx = string1Array.indexOf(char); idx < string1.length; idx += 1) {
+        compareString += string1Array[idx];
+      }
+    }
   }
-} 
+  if (compareString === string2) {
+    bool = true;
+  }
+  return bool;
+}
