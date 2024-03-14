@@ -7,11 +7,14 @@ console.log(rotate('abcdefg', 3));
 //'cdefgab'
 //'defgabc'
 
-// input: string, number
+// input: string, number (numTimes)
 // output: string, rotated by one to the right as many times as the second argument
 
+// coerce string to array
 // 1 rotation: shift(), push()
-// rotate x times using loop, where x is second argument
+// rotate numTimes times using loop
+// coerce array to string
+// return string
 
 function rotate(string, numTimes) {
   let stringArray = string.split('');
