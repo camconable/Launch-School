@@ -50,32 +50,47 @@
 // }
 
 
-// ****************** NOT DONE YET ******************
 // - Create a function that takes two arrays as arguments and return a boolean value `true` if those two arrays have the same values (primitives and objects). The same objects are objects that are pointing to the same place in the memory. For example:
 
 
 let a = [1,2,3];
 let b = [1,2,3];
 
-let c = [a, b]
-let d = [a, b]
-let e = [[1,2,3], [1,2,3]]
+let c = [a, b];
+let d = [a, b];
+let e = [[1,2,3], [1,2,3]];
 
-theSame(c,d); //true
-theSame(c,e); //false
-theSame(d,e); //false
+console.log(theSame(c,d)); //true
+console.log(theSame(c,e)); //false
+console.log(theSame(d,e)); //false
 
 
 // input: two arrays
 // output: boolean, true if both arrays have the same values (primitives and objects)
 // same objects: objects pointing to the same space in memory
 
+// check if arrays have same primitives
+//   sort arrays, flatten, and loop thru and compare each
 
-// strict equality for comparing objects
+// check if arrays have same objects:
+//   arr1[0] === arr2[0] (loop thru elems and compare)
 
-// first check if both arrays include objects
-//   if only one includes objects, return false
-//   if both have objects, compare them directly using ===
-// if both have primitives, loop 
+function theSame(arr1, arr2) {
+  // This recursive flattenArray function checks if the current value is an array. If so, it calls itself with that array to flatten it, and concatenates the result to the accumulator. Otherwise, it just concatenates the value.
 
-// ****************** NOT DONE YET ******************
+  const flattenArray = arr => arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flattenArray(val) : val), []);
+
+  let flatAndSortedArr1 = flattenArray(arr1).sort();
+  let flatAndSortedArr2 = flattenArray(arr2).sort();
+
+  for (let [idx, elem] of flatAndSortedArr1.entries()) {
+    if (elem !== flatAndSortedArr2[idx]) return false;
+  }
+
+  for (let idx = 0; idx < arr1.length; idx += 1) {
+    if (arr1[idx] !== arr2[idx]) return false;
+  }
+
+  return true;
+}
+
