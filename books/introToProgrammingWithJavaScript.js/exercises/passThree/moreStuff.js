@@ -10,6 +10,12 @@
 
 // Solution
 
+// This logs [1, 4, 3] to the console.
+
+// On line 1 array1 is assigned the reference to [1, 2, 3] and on line 2 the interpreter copies the reference to that same array and stores it in the variable array2. array1 and array2 are pointing to the same array, so mutating array1 on line 3 mutates the same array referenced by array2.
+
+// This demonstrates that variable assignment from one object to another works similar to pass by reference.
+
 // What do the following error message and stack trace tell you?
 
 // $ node exercise2.js
@@ -31,15 +37,22 @@
 
 // Solution
 
+// This demonstrates that we cannot reference (or pass or "use") a variable that has not been declared using let or const. greeting must be declared before the code above can be run.
+
+// More specifically, the stack trace error is pointing to the file exercise2.js on line 4. It is pointing to the first character in console.log, suggesting the argument being passed to console.log is not valid. It cites a ReferenceError, telling us that the identifier (greeting) has not been defined. Line 7 tells us it's in the hello function (column 15, line 4). Line 8 tells us that hello was called from line 13 in an anonymous function
+
 // Write some code to output the square root of 37.
 // Solution
 
+// Math.sqrt(37);
+
 // Given a list of numbers, write some code to find and display the largest numeric value in the list.
-// List 	Max
-// 1, 6, 3, 2 	6
+// List 	          Max
+// 1, 6, 3, 2 	      6
 // -1, -6, -3, -2 	-1
-// 2, 2 	2
+// 2, 2 	          2
 // Solution
+
 
 // What does the following function do?
 
